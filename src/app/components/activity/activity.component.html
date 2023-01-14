@@ -1,0 +1,98 @@
+<script>
+    
+</script>
+
+<nav class="navbar bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="https://media.istockphoto.com/vectors/checklist-icon-design-illustrationcartoon-design-style-vector-id937962586?k=6&m=937962586&s=170667a&w=0&h=hdcLfcu3H5DhGUl7MBmTKqRkBae_etpgHb5oUZlD_IY=" alt="logo" width="280" height="180">
+        </a>
+        <div class="col-md-4">
+            <h1>Registro de Actividades</h1>        
+        </div>
+        <img src="https://tse2.mm.bing.net/th?id=OIP.l6MDANrsTRhjLHAx5UjCFwHaEY&pid=Api&P=0" width="115" height="100">
+    </div>
+</nav>
+
+<div class="col-md-12 p-2">
+    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa fa-save" (click)="listEmployee()"></i> Agregar</button>
+    <table class="table mt-2 table-bordeared">
+        <thead class="table-primary">
+            <tr>
+                <th>ID</th>
+                <th>Descripcion</th>
+                <th>ID Empleado</th>
+                <th>Empleado</th>      
+                <th>Fecha Tarea</th>
+                <th>Fecha Ejecucion</th>   
+                <th>Dias Retraso</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of ListActivity">
+                <td>{{item.idActividades}}</td>
+                <td>{{item.descripcion}}</td>
+                <td>{{item.idEmpleado}}</td>
+                <td>{{item.nombreEmpleado}}</td>
+                <td>{{item.fechaRegistro | date:"short"}}</td>
+                <td>{{item.fechaEjecucion | date:"short"}}</td>
+                <td>{{item.dias}}</td>
+                <td *ngIf="item.estado">REALIZADA</td>
+                <td *ngIf="!item.estado">PENDIENTE</td>
+            
+                <td>
+                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#myModal" (click)="selectItem(item)">
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                    &nbsp;
+                    <button type="button" class="btn btn-danger btn-sm" (click)="delete(item.idActividades)">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" backDrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 *ngIf="!isUpdate" class="modal-title fs-5">Nuevo Registro de Actividad</h1>
+                <h1 *ngIf="isUpdate" class="modal-title fs-5">Actualizar Registro de Actividad</h1>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close" (click)="newActivity()"></button> -->
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formActivity">
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">Empleado</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" formControlName="idEmpleado">
+                                <option *ngFor="let ite of ListEmployee" [value]="ite.idEmpleado" >{{ite.nombre}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">Descripcion</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" formControlName="descripcion">
+                        </div>
+                    </div>
+                    <div *ngIf="!isUpdate" class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">Fecha Tarea</label>
+                        <div class="col-sm-10">
+                            <input type="datetime-local" class="form-control" formControlName="fechaRegistro">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" (click)="newActivity()"> Cerrar</button>
+                <button *ngIf="!isUpdate" type="button" class="btn btn-success btn-sm" (click)="save()" > Guardar</button>
+                <button *ngIf="isUpdate" type="button" class="btn btn-warning btn-sm" (click)="update()" > Finalizar Tarea</button>
+            </div>
+        </div>
+    </div>
+</div>
